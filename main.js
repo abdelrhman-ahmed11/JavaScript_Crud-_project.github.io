@@ -1,107 +1,129 @@
-var ProductNameInput = document.getElementById("productNameInput");
-var productPriceInput = document.getElementById("productPriceInput");
-var productCatInput = document.getElementById("productCatInput");
-var productDesInput = document.getElementById("productDesInput");
+var siteNameInput = document.getElementById("siteNameInput");
+var siteUrlInput = document.getElementById("siteUrlInput");
 var mainBtn = document.getElementById("mainBtn");
-    mainBtn.innerHTML = "Add Product";
-var productContainer;
+mainBtn.value = "Submit";
+var searchInput = document.getElementById("searchInput");
+var updateIndex;
+var siteContainer;
 
-
-if (localStorage.getItem("myProducts") == null) {
-    productContainer = [];
+if (localStorage.getItem("mySite") == null) {
+    siteContainer = [];
 }
 else {
-    productContainer = JSON.parse(localStorage.getItem("myProducts"));
+    siteContainer = JSON.parse(localStorage.getItem("mySite"));
     displayData();
 }
 
-function AddProduct() {
-    var product = {
-        Name: productNameInput.value,
-        Price: productPriceInput.value,
-        Category: productCatInput.value,
-        Description: productDesInput.value
-    };
-    if (mainBtn.innerHTML = "Add Product") {
-        productContainer.push(product);
+mainBtn.onclick = function () {
+
+    if (mainBtn.value == "Submit") {
+
+        var newSite = {
+            siteName: siteNameInput.value,
+            siteUrl: siteUrlInput.value,
+        }
+
+        siteContainer.push(newSite);
+        localStorage.setItem("mySite", JSON.stringify(siteContainer));
+        clearForm();
+        displayData();
+
     }
     else {
-        changeFormForUpdate(productIndex);
+        var site = {
+            siteName: siteNameInput.value,
+            siteUrl: siteUrlInput.value,
+        }
+
+        siteContainer.splice(Number(updateIndex), 1, site);
+        localStorage.setItem("mySite", JSON.stringify(siteContainer));
+        mainBtn.value = "Submit"
+        clearForm();
+        displayData();
+
     }
-    localStorage.setItem("myProducts", JSON.stringify(productContainer));
-    cleanForm();
-    displayData();
-};
 
-function cleanForm() {
+}
 
-    ProductNameInput.value = "";
-    productPriceInput.value = "";
-    productDesInput.value = "";
-    productCatInput.value = "";
-
+function clearForm() {
+    siteNameInput.value = ``
+    siteUrlInput.value = ``
 }
 
 function displayData() {
 
-    var cartona = "";
+    var container = ``
 
-    for (let i = 0; i < productContainer.length; i++) {
+    for (let i = 0; i < siteContainer.length; i++) {
 
-        cartona += `
+        container += `
         <tr>
-            <td>${i}</td>
-            <td>${productContainer[i].Name}</td>
-            <td>${productContainer[i].Price}</td>
-            <td>${productContainer[i].Category}</td>
-            <td>${productContainer[i].Description}</td>
-            <td><button onclick="changeFormForUpdate(`+ i + `)" class="btn btn-outline-warning">Update</button></td>
-            <td><button onclick="deleteProduct(`+ i + `)" class="btn btn-outline-danger">Delete</button></td>
+        <td>${i}</td>
+        <td class="text-uppercase">${siteContainer[i].siteName}</td>
+        <td><button  onclick="deleteRow(`+ i + `)" class="btn btn-outline-danger">Delete</button></td>
+        <td><button onclick="updateRow(`+ i + `)" class="btn btn-outline-warning">Update</button></td>
+        <td><a href="${siteContainer[i].siteUrl}" target="_blank" class="btn btn-outline-info">Visit</a></td>
         </tr>`
     }
 
-    document.getElementById("tBody").innerHTML = cartona;
+    document.getElementById("tBody").innerHTML = container;
 }
 
-function deleteProduct(productIndex) {
+function deleteRow(siteIndex) {
 
-    productContainer.splice(productIndex, 1);
+    siteContainer.splice(siteIndex, 1);
 
-    localStorage.setItem("myProducts", JSON.stringify(productContainer));
+    localStorage.setItem("mySite", JSON.stringify(siteContainer));
 
     displayData();
 }
 
-function searchProduct(searchterm) {
-    var cartona = ``;
+function getSearch(searchTrem) {
 
-    for (let i = 0; i < productContainer.length; i++) {
+    container = ``
 
-        if (productContainer[i].Name.toLowerCase().includes(searchterm.toLowerCase())) {
-            cartona += `
+    for (let i = 0; i < siteContainer.length; i++) {
+
+        if (siteContainer[i].siteName.toLowerCase().includes(searchTrem.toLowerCase()))
+
+            container += `
         <tr>
-            <td>${i}</td>
-            <td>${productContainer[i].Name}</td>
-            <td>${productContainer[i].Price}</td>
-            <td>${productContainer[i].Category}</td>
-            <td>${productContainer[i].Description}</td>
-            <td><button onclick="changeFormForUpdate(`+ i + `)" class="btn btn-outline-warning">Update</button></td>
-            <td><button onclick="deleteProduct(` + i + `)" class="btn btn-outline-danger">Delete</button></td>
-        </tr>`;
+        <td>${i}</td>
+        <td class="text-uppercase">${siteContainer[i].siteName}</td>
+        <td><button  onclick="deleteRow(`+ i + `)" class="btn btn-outline-danger">Delete</button></td>
+        <td><button onclick="updateRow(`+ i + `)" class="btn btn-outline-warning">Update</button></td>
+        <td><a href="${siteContainer[i].siteUrl}" target="_blank" class="btn btn-outline-info">Visit<a></td>
+        </tr>`
 
-        }
     }
-    document.getElementById("tBody").innerHTML = cartona;
+
+    document.getElementById("tBody").innerHTML = container;
 }
 
-function changeFormForUpdate(productIndex) {
+function updateRow(siteIndex) {
 
-    mainBtn.innerHTML = "update Product";
+    siteNameInput.value = siteContainer[siteIndex].siteName
+    siteUrlInput.value = siteContainer[siteIndex].siteUrl
 
-    productNameInput.value = productContainer[productIndex].Name;
-    productPriceInput.value = productContainer[productIndex].Price;
-    productCatInput.value = productContainer[productIndex].Category;
-    productDesInput.value = productContainer[productIndex].Description;
+    mainBtn.value = "Update"
 
-    productContainer.splice(productIndex, 1 );
+    updateIndex = siteIndex
 }
+
+/* document.onkeydown = function (e) {
+    if (event.keyCode == 123) {
+        return false;
+    }
+    if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) {
+        return false;
+    }
+    if (e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) {
+        return false;
+    }
+    if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) {
+        return false;
+    }
+    if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) {
+        return false;
+    }
+} */

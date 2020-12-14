@@ -10,56 +10,49 @@
     <!-- CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
         integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+</head>
 
-<body>
+<body><!-- oncontextmenu="return false" -->
 
     <div class="container py-5">
+        <h1 class="pl-3">Bookmarker</h1>
+        <hr>
+        <div class="form p-5 text-center" style="background-color: #eeeeee;">
 
-        <div class="form-group">
-            <label for="productNameInput">Product Name :</label>
-            <input class="form-control" type="text" id="productNameInput">
+            <h2 class="py-3">Bookmark your favorite sites</h2>
+
+            <div class="form-group">
+                <label for="">Site Name</label>
+                <input type="text" class="form-control" id="siteNameInput">
+            </div>
+
+            <div class="form-group">
+                <label for="">Site URL</label>
+                <input type="text" class="form-control" id="siteUrlInput">
+            </div>
+
+            <input type="submit" value="" id="mainBtn" class="btn btn-primary">
+
         </div>
-
-        <div class="form-group">
-            <label for="productPriceInput">Product Price :</label>
-            <input class="form-control" type="number" id="productPriceInput">
-        </div>
-
-        <div class="form-group">
-            <label for="productCatInput">Product category :</label>
-            <input class="form-control" type="text" id="productCatInput">
-        </div>
-
-        <div class="form-group">
-            <label for="productDesInput">Product Description :</label>
-            <textarea class="form-control" type="text" id="productDesInput"></textarea>
-        </div>
-
-        <button class="btn btn-outline-primary" id="mainBtn" onclick="AddProduct()"></button>
-
+        <hr>
     </div>
 
-    <input class="form-control w-50 m-auto" onkeyup="searchProduct(this.value)" type="search" placeholder="Search by product name" id="searchInput">
+    <input type="search" class="form-control w-50 m-auto" onkeyup="getSearch(this.value)" id="searchInput">
 
-    <div class="container my-5">
+    <div class="container pl-3 my-5">
         <table class="table">
             <thead>
-                <tr>
-                    <th>Index</th>
-                    <th>Name</th>
-                    <th>Price</th>
-                    <th>Catogery</th>
-                    <th>Description</th>
-                    <th>Update</th>
-                    <th>Delete</th>
-                </tr>
+                <th>Index</th>
+                <th>Site Name</th>
+                <th>Delete</th>
+                <th>Update</th>
+                <th>Visit</th>
             </thead>
             <tbody id="tBody">
 
             </tbody>
         </table>
     </div>
-
 
     <!-- Optional JavaScript -->
     <script src="main.js"></script>
